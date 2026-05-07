@@ -11,10 +11,12 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+
   void checkReminder() {
     for (var service in services) {
       if (!service.isDone &&
           service.date.difference(DateTime.now()).inSeconds <= 5) {
+
         NotificationService.showNotification(
           "Reminder Servis",
           service.title,
@@ -35,31 +37,48 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("MotoCare")),
-      body: ListView.builder(
-        itemCount: services.length,
-        itemBuilder: (_, index) {
-          final s = services[index];
+      appBar: AppBar(
+        title: Text("MotoCare"),
+      ),
 
-          return ListTile(
-            title: Text(s.title),
-            subtitle: Text(s.date.toString()),
-            trailing: Checkbox(
-              value: s.isDone,
-              onChanged: (val) {
-                setState(() {
-                  s.isDone = val!;
-                });
+      body: services.isEmpty
+          ? Center(
+              child: Text(
+                "Reminder Servis Motor",
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            )
+          : ListView.builder(
+              itemCount: services.length,
+              itemBuilder: (_, index) {
+                final s = services[index];
+
+                return ListTile(
+                  leading: Icon(Icons.motorcycle),
+                  title: Text(s.title),
+                  subtitle: Text(s.date.toString()),
+                  trailing: Checkbox(
+                    value: s.isDone,
+                    onChanged: (val) {
+                      setState(() {
+                        s.isDone = val!;
+                      });
+                    },
+                  ),
+                );
               },
             ),
-          );
-        },
-      ),
+
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           final result = await Navigator.push(
             context,
-            MaterialPageRoute(builder: (_) => AddServiceScreen()),
+            MaterialPageRoute(
+              builder: (_) => AddServiceScreen(),
+            ),
           );
 
           if (result != null) {
