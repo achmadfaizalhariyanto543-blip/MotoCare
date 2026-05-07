@@ -4,7 +4,6 @@ import 'add_service.dart';
 import '../services/notification_service.dart';
 
 class HomeScreen extends StatefulWidget {
-
   @override
   State<HomeScreen> createState() =>
       _HomeScreenState();
@@ -78,21 +77,41 @@ class _HomeScreenState
 
                 return Card(
 
-                  margin: EdgeInsets.all(10),
+                  elevation: 5,
+
+                  shape:
+                      RoundedRectangleBorder(
+                    borderRadius:
+                        BorderRadius.circular(
+                            15),
+                  ),
+
+                  margin:
+                      EdgeInsets.all(10),
 
                   child: ListTile(
 
-                    leading:
-                        Icon(Icons.build),
+                    leading: CircleAvatar(
+                      child:
+                          Icon(Icons.build),
+                    ),
 
-                    title:
-                        Text(service.title),
+                    title: Text(
+                      service.title,
+
+                      style: TextStyle(
+                        fontWeight:
+                            FontWeight.bold,
+                      ),
+                    ),
 
                     subtitle: Column(
                       crossAxisAlignment:
                           CrossAxisAlignment
                               .start,
                       children: [
+
+                        SizedBox(height: 5),
 
                         Text(
                           service.description,
@@ -108,7 +127,9 @@ class _HomeScreenState
                     ),
 
                     trailing: Checkbox(
-                      value: service.isDone,
+
+                      value:
+                          service.isDone,
 
                       onChanged: (val) {
 
