@@ -1,7 +1,9 @@
 class Service {
+
   String title;
   String description;
   DateTime date;
+
   bool isDone;
 
   Service({

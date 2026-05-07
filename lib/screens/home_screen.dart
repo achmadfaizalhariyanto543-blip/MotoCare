@@ -131,12 +131,12 @@ class _HomeScreenState
                       value:
                           service.isDone,
 
-                      onChanged: (val) {
+                      onChanged: (value) {
 
                         setState(() {
 
                           service.isDone =
-                              val!;
+                              value!;
                         });
                       },
                     ),
