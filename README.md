@@ -1,12 +1,12 @@
 # MotoCare
 
-Aplikasi pengingat servis motor berbasis Flutter.
+Aplikasi reminder servis motor berbasis Flutter.
 
 ## Fitur
 - Tambah jadwal servis
-- Notifikasi reminder
+- Reminder servis
 - Checklist servis
 
-## Cara Run
+## Cara Menjalankan
 flutter pub get
 flutter run
