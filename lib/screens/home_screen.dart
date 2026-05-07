@@ -3,19 +3,27 @@ import '../models/service.dart';
 import 'add_service.dart';
 import '../services/notification_service.dart';
 
-List<Service> services = [];
-
 class HomeScreen extends StatefulWidget {
+
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<HomeScreen> createState() =>
+      _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState
+    extends State<HomeScreen> {
+
+  List<Service> services = [];
 
   void checkReminder() {
+
     for (var service in services) {
+
       if (!service.isDone &&
-          service.date.difference(DateTime.now()).inSeconds <= 5) {
+          service.date
+                  .difference(DateTime.now())
+                  .inSeconds <=
+              5) {
 
         NotificationService.showNotification(
           "Reminder Servis",
@@ -29,65 +37,119 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
 
-    Future.delayed(Duration(seconds: 5), () {
-      checkReminder();
-    });
+    Future.delayed(
+      Duration(seconds: 5),
+      () {
+        checkReminder();
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
+
       appBar: AppBar(
         title: Text("MotoCare"),
       ),
 
       body: services.isEmpty
+
           ? Center(
               child: Text(
-                "Reminder Servis Motor",
+                "Belum ada jadwal servis",
                 style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                  fontWeight:
+                      FontWeight.bold,
                 ),
               ),
             )
-          : ListView.builder(
-              itemCount: services.length,
-              itemBuilder: (_, index) {
-                final s = services[index];
 
-                return ListTile(
-                  leading: Icon(Icons.motorcycle),
-                  title: Text(s.title),
-                  subtitle: Text(s.date.toString()),
-                  trailing: Checkbox(
-                    value: s.isDone,
-                    onChanged: (val) {
-                      setState(() {
-                        s.isDone = val!;
-                      });
-                    },
+          : ListView.builder(
+
+              itemCount: services.length,
+
+              itemBuilder: (_, index) {
+
+                final service =
+                    services[index];
+
+                return Card(
+
+                  margin: EdgeInsets.all(10),
+
+                  child: ListTile(
+
+                    leading:
+                        Icon(Icons.build),
+
+                    title:
+                        Text(service.title),
+
+                    subtitle: Column(
+                      crossAxisAlignment:
+                          CrossAxisAlignment
+                              .start,
+                      children: [
+
+                        Text(
+                          service.description,
+                        ),
+
+                        SizedBox(height: 5),
+
+                        Text(
+                          service.date
+                              .toString(),
+                        ),
+                      ],
+                    ),
+
+                    trailing: Checkbox(
+                      value: service.isDone,
+
+                      onChanged: (val) {
+
+                        setState(() {
+
+                          service.isDone =
+                              val!;
+                        });
+                      },
+                    ),
                   ),
                 );
               },
             ),
 
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton:
+          FloatingActionButton(
+
+        child: Icon(Icons.add),
+
         onPressed: () async {
-          final result = await Navigator.push(
+
+          final result =
+              await Navigator.push(
+
             context,
+
             MaterialPageRoute(
-              builder: (_) => AddServiceScreen(),
+              builder: (_) =>
+                  AddServiceScreen(),
             ),
           );
 
           if (result != null) {
+
             setState(() {
+
               services.add(result);
             });
           }
         },
-        child: Icon(Icons.add),
       ),
     );
   }
