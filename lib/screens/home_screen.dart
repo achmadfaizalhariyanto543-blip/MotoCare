@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import '../models/service.dart';
-import 'add_service.dart';
-import '../services/notification_service.dart';
+import 'add_service_screen.dart';
 
 class HomeScreen extends StatefulWidget {
+
   @override
   State<HomeScreen> createState() =>
       _HomeScreenState();
@@ -14,43 +14,16 @@ class _HomeScreenState
 
   List<Service> services = [];
 
-  void checkReminder() {
-
-    for (var service in services) {
-
-      if (!service.isDone &&
-          service.date
-                  .difference(DateTime.now())
-                  .inSeconds <=
-              5) {
-
-        NotificationService.showNotification(
-          "Reminder Servis",
-          service.title,
-        );
-      }
-    }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-
-    Future.delayed(
-      Duration(seconds: 5),
-      () {
-        checkReminder();
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
 
     return Scaffold(
 
+      backgroundColor: Colors.grey[100],
+
       appBar: AppBar(
         title: Text("MotoCare"),
+        centerTitle: true,
       ),
 
       body: services.isEmpty
@@ -58,42 +31,43 @@ class _HomeScreenState
           ? Center(
               child: Text(
                 "Belum ada jadwal servis",
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight:
-                      FontWeight.bold,
-                ),
+                style: TextStyle(fontSize: 18),
               ),
             )
 
           : ListView.builder(
 
+              padding: EdgeInsets.all(12),
+
               itemCount: services.length,
 
               itemBuilder: (_, index) {
 
-                final service =
-                    services[index];
+                final service = services[index];
 
                 return Card(
 
-                  elevation: 5,
+                  elevation: 4,
 
-                  shape:
-                      RoundedRectangleBorder(
+                  margin: EdgeInsets.only(bottom: 12),
+
+                  shape: RoundedRectangleBorder(
                     borderRadius:
-                        BorderRadius.circular(
-                            15),
+                        BorderRadius.circular(15),
                   ),
-
-                  margin:
-                      EdgeInsets.all(10),
 
                   child: ListTile(
 
+                    contentPadding:
+                        EdgeInsets.all(12),
+
                     leading: CircleAvatar(
-                      child:
-                          Icon(Icons.build),
+                      backgroundColor: Colors.blue,
+
+                      child: Icon(
+                        Icons.build,
+                        color: Colors.white,
+                      ),
                     ),
 
                     title: Text(
@@ -106,35 +80,31 @@ class _HomeScreenState
                     ),
 
                     subtitle: Column(
+
                       crossAxisAlignment:
-                          CrossAxisAlignment
-                              .start,
+                          CrossAxisAlignment.start,
+
                       children: [
 
                         SizedBox(height: 5),
 
-                        Text(
-                          service.description,
-                        ),
+                        Text(service.description),
 
                         SizedBox(height: 5),
 
                         Text(
-                          service.date
-                              .toString(),
+                          "${service.date.day}/${service.date.month}/${service.date.year}",
                         ),
                       ],
                     ),
 
                     trailing: Checkbox(
 
-                      value:
-                          service.isDone,
+                      value: service.isDone,
 
                       onChanged: (value) {
 
                         setState(() {
-
                           service.isDone =
                               value!;
                         });
@@ -146,9 +116,11 @@ class _HomeScreenState
             ),
 
       floatingActionButton:
-          FloatingActionButton(
+          FloatingActionButton.extended(
 
-        child: Icon(Icons.add),
+        icon: Icon(Icons.add),
+
+        label: Text("Tambah"),
 
         onPressed: () async {
 
@@ -166,7 +138,6 @@ class _HomeScreenState
           if (result != null) {
 
             setState(() {
-
               services.add(result);
             });
           }
