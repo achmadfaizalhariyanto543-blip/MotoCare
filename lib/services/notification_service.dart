@@ -1,40 +1,36 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class NotificationService {
-
   static final FlutterLocalNotificationsPlugin
-      notifications =
+      flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
 
-  static Future init() async {
-
-    const AndroidInitializationSettings
-        android =
+  static Future<void> init() async {
+    const AndroidInitializationSettings androidSettings =
         AndroidInitializationSettings(
       '@mipmap/ic_launcher',
     );
 
     const InitializationSettings settings =
         InitializationSettings(
-      android: android,
+      android: androidSettings,
     );
 
-    await notifications.initialize(
+    await flutterLocalNotificationsPlugin.initialize(
       settings,
     );
   }
 
-  static Future showNotification(
-    String title,
-    String body,
-  ) async {
-
-    const AndroidNotificationDetails
-        androidDetails =
+  static Future<void> showNotification({
+    required String title,
+    required String body,
+  }) async {
+    const AndroidNotificationDetails androidDetails =
         AndroidNotificationDetails(
-      'channel_id',
-      'channel_name',
-
+      'servis_channel',
+      'Reminder Servis',
+      channelDescription:
+          'Notifikasi pengingat servis motor',
       importance: Importance.max,
       priority: Priority.high,
     );
@@ -44,7 +40,7 @@ class NotificationService {
       android: androidDetails,
     );
 
-    await notifications.show(
+    await flutterLocalNotificationsPlugin.show(
       0,
       title,
       body,
